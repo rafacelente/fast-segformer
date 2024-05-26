@@ -47,33 +47,6 @@ class EagerAttention(nn.Module):
 
         attn_output = attn_output.transpose(1, 2).contiguous().reshape(bsz, seqlen, -1)    
         return self.proj_drop(self.wo(attn_output))
-    
-# class MixMLP(nn.Module):
-#     def __init__(
-#             self,
-#             hidden_size: int,
-#             mlp_ratio: Optional[int] = 4,
-#             dropout: Optional[float] = 0.
-#         ):
-#         super().__init__()
-#         mlp_hidden_size = hidden_size * mlp_ratio
-#         self.fc1 = nn.Linear(hidden_size, mlp_hidden_size)
-#         self.act = nn.GELU()
-#         self.fc2 = nn.Linear(mlp_hidden_size, hidden_size)
-#         self.drop = nn.Dropout(dropout)
-#         self.dwconv = DWConv(hidden_size)
-#         print(f"hidden_size: {hidden_size}")
-
-#     def forward(self, x: torch.Tensor, height, width) -> torch.Tensor:
-#         print(f"Executing MixMLP")
-#         x = self.fc1(x)
-#         x = self.dwconv(x, height, width)
-#         x = self.act(x)
-#         x = self.drop(x)
-#         x = self.fc2(x)
-#         x = self.drop(x)
-#         return x
-    
 
 class TransformerBlock(nn.Module):
     def __init__(
@@ -172,14 +145,4 @@ class Transformer(nn.Module):
             x = self.norm[i](x)
             x = x.reshape(B, height, width, -1).permute(0, 3, 1, 2).contiguous()
         return x
-
-
-
-
-
-
-
-        
-
-
         
